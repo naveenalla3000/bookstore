@@ -1,6 +1,8 @@
 <?php
 session_start();
 define("APPURL", "http://localhost/bookstore/");
+// ini_set("display_errors", 1);
+// error_reporting(E_ALL);
 ?>
 <!doctype html>
 <html lang="en">
