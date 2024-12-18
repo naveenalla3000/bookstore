@@ -95,25 +95,30 @@ if ($productId) {
                                 <input type="hidden" name="pro_image" value="<?php echo htmlspecialchars($product->image, ENT_QUOTES, 'UTF-8'); ?>">
                                 <input type="hidden" name="pro_price" value="<?php echo htmlspecialchars($product->price, ENT_QUOTES, 'UTF-8'); ?>">
                                 <input type="hidden" name="pro_file" value="<?php echo htmlspecialchars($product->file, ENT_QUOTES, 'UTF-8'); ?>">
+                                <?php if(isset($_SESSION['user_id'])) { ?>
                                 <div class="form-group">
                                     <label for="pro_amount">Quantity</label>
                                     <input type="number" name="pro_amount" id="pro_amount" class="form-control" value="1" min="1">
                                 </div>
-                                <input type="hidden" name="user_id" value="<?php echo  htmlspecialchars($_SESSION['user_id'])?>">
-                                <div class="cart mt-4 align-items-center">
-                                    <?php if ($select->rowCount() > 0): ?>
-                                        <button type="submit" id="submit" name="submit" disabled class="btn btn-primary text-uppercase mr-2 px-4">
-                                            <i class="fas fa-shopping-cart"></i> Added to cart
-                                        </button>
-                                    <?php else: ?>
-                                        <button type="submit" id="submit" name="submit" class="btn btn-primary text-uppercase mr-2 px-4">
-                                            <i class="fas fa-shopping-cart"></i> Add to cart
-                                        </button>
-                                    <?php endif; ?>
-                                </div>
+                                <?php } ?>
+                                <input type="hidden" name="user_id" value="<?php echo  htmlspecialchars($_SESSION['user_id']) ?>">
+                                <?php if (isset($_SESSION["user_id"])) { ?>
+                                    <div class="cart mt-4 align-items-center">
+                                        <?php if ($select->rowCount() > 0): ?>
+                                            <button type="submit" id="submit" name="submit" disabled class="btn btn-primary text-uppercase mr-2 px-4">
+                                                <i class="fas fa-shopping-cart"></i> Added to cart
+                                            </button>
+                                        <?php else: ?>
+                                            <button type="submit" id="submit" name="submit" class="btn btn-primary text-uppercase mr-2 px-4">
+                                                <i class="fas fa-shopping-cart"></i> Add to cart
+                                            </button>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php } ?>
                             </form>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
