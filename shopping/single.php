@@ -95,11 +95,11 @@ if ($productId) {
                                 <input type="hidden" name="pro_image" value="<?php echo htmlspecialchars($product->image, ENT_QUOTES, 'UTF-8'); ?>">
                                 <input type="hidden" name="pro_price" value="<?php echo htmlspecialchars($product->price, ENT_QUOTES, 'UTF-8'); ?>">
                                 <input type="hidden" name="pro_file" value="<?php echo htmlspecialchars($product->file, ENT_QUOTES, 'UTF-8'); ?>">
-                                <?php if(isset($_SESSION['user_id'])) { ?>
-                                <div class="form-group">
-                                    <label for="pro_amount">Quantity</label>
-                                    <input type="number" name="pro_amount" id="pro_amount" class="form-control" value="1" min="1">
-                                </div>
+                                <?php if (isset($_SESSION['user_id'])) { ?>
+                                    <div class="form-group">
+                                        <label for="pro_amount">Quantity</label>
+                                        <input type="number" name="pro_amount" id="pro_amount" class="form-control" value="1" min="1">
+                                    </div>
                                 <?php } ?>
                                 <input type="hidden" name="user_id" value="<?php echo  htmlspecialchars($_SESSION['user_id']) ?>">
                                 <?php if (isset($_SESSION["user_id"])) { ?>
@@ -139,11 +139,15 @@ if ($productId) {
                 success: function(data) {
                     alert("Product added to cart");
                     $("#submit").html("<i class='fas fa-shopping-cart'></i> Add to cart").prop("disabled", true);
+                    reload();
                 },
                 error: function(xhr, status, error) {
                     alert("An error occurred: " + xhr.responseText);
                 }
             });
+            function reload() {
+                $("body").load("single.php?id=<?php echo $productId; ?>");
+            }
         });
     });
 </script>

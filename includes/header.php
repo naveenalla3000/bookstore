@@ -3,6 +3,19 @@ session_start();
 define("APPURL", "http://localhost/bookstore/");
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
+require dirname(dirname(__FILE__)) . "/config/config.php";
+
+if (isset($_SESSION["user_id"])) {
+    $stmt = $conn->prepare("SELECT COUNT(*) as num_products FROM cart WHERE user_id = :user_id");
+
+    $stmt->execute([
+        ":user_id" => $_SESSION['user_id']
+    ]);
+
+    $noOfItems = $stmt->fetch(PDO::FETCH_OBJ);
+}
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -40,14 +53,14 @@ error_reporting(E_ALL);
                     </li>
                     <?php if (isset($_SESSION['user_id'])) : ?>
                         <li class="nav-item">
-                            <a class="nav-link active  text-white" aria-current="page" href="<?php echo APPURL; ?>shopping/cart.php"><i class="fas fa-shopping-cart"></i>(2)</a>
+                            <a class="nav-link active  text-white" aria-current="page" href="<?php echo APPURL; ?>shopping/cart.php"><i class="fas fa-shopping-cart"></i><?php echo $noOfItems->num_products; ?> </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active  text-white" aria-current="page" href="<?php echo APPURL; ?>categories/index.php">Categories</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle  text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <?php echo $_SESSION['username'];?>
+                                <?php echo $_SESSION['username']; ?>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="#">Action</a></li>
