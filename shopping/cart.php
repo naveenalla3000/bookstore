@@ -9,6 +9,12 @@ $stmt = $conn->prepare("SELECT * FROM cart WHERE user_id = :user_id");
 $stmt->bindParam(":user_id", $user_id);
 $stmt->execute();
 $allProducts = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+if( isset($_POST["submit"])){
+  $price = $_POST["price"];
+  $_SESSION["price"] = $price;
+  header("location: checkout.php");
+}
 ?>
 <div class="container">
   <div class="row d-flex justify-content-center align-items-center h-100 mt-5 mt-5">
@@ -74,12 +80,15 @@ $allProducts = $stmt->fetchAll(PDO::FETCH_OBJ);
               <div class="p-5">
                 <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
                 <hr class="my-4">
-                <div class="d-flex justify-content-between mb-5">
-                  <h5 class="text-uppercase">Total price</h5>
-                  <h5 class="full_price"></h5>
-                </div>
-                <button type="button" class="btn btn-dark btn-block btn-lg"
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                  <div class="d-flex justify-content-between mb-5">
+                    <h5 class="text-uppercase">Total price</h5>
+                    <h5 class="full_price"></h5>
+                    <input type="hidden" class="inp_price" name="price"/>
+                  </div>
+                <button type="submit" name="submit" class="checkout btn btn-dark btn-block btn-lg"
                   data-mdb-ripple-color="dark">Checkout</button>
+                  </form>
               </div>
             </div>
           </div>
@@ -182,7 +191,15 @@ $allProducts = $stmt->fetchAll(PDO::FETCH_OBJ);
           sum += parseFloat($(this).text()) || 0;
         });
         $(".full_price").html(sum + "$");
-      }, 100);
+        $(".inp_price").val(sum);
+
+        if($(".inp_price").val()>0){
+          $(".checkout").show();
+        }else{
+          $(".checkout").hide();
+        }
+
+      }, 4000);
     }
 
     function reload() {
