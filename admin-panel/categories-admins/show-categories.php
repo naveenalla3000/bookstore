@@ -1,4 +1,4 @@
-<?php 
+<?php
 require "../includes/header.php";
 ?>
     <div class="container-fluid">
@@ -8,7 +8,7 @@ require "../includes/header.php";
           <div class="card">
             <div class="card-body">
               <h5 class="card-title mb-4 d-inline">Categories</h5>
-             <a  href="create-category.html" class="btn btn-primary mb-4 text-center float-right">Create Categories</a>
+             <a  href="<?php echo ADMINURL;?>/categories-admins/create-category.php" class="btn btn-primary mb-4 text-center float-right">Create Categories</a>
               <table class="table">
                 <thead>
                   <tr>
@@ -47,6 +47,4 @@ require "../includes/header.php";
 
 
   </div>
-<?php
-require "../includes/footer.php";
-?>
+<?php require "../includes/footer.php"; ?>
