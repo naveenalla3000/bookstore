@@ -22,6 +22,7 @@ $allRows = $rows->fetchAll(PDO::FETCH_OBJ);
                         </a>
                     </div>
                 </div>
+                <br/>
             </div>
             <br>
         <?php endforeach; ?>
