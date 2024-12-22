@@ -5,14 +5,10 @@ require "../config/config.php";
 
 <?php
 /* at the top of 'check.php' */
-if ($_SERVER['REQUEST_METHOD'] == 'GET' && realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
-    /* 
-     Up to you which header to send, some prefer 404 even if 
-     the files does exist for security
-  */
-    header("Location: " . APPURL . " ");
-    die;
-}
+if(!isset($_SERVER['HTTP_REFERER'])){
+    header("location: cart.php");
+    exit;
+  }
 
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
 if ($user_id == '') {

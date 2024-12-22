@@ -4,6 +4,10 @@ require "config/config.php";
 ?>
 
 <?php
+if (!isset($_SERVER['HTTP_REFERER'])) {
+    header("location: cart.php");
+    exit;
+}
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['id'];
     $stmt = $conn->prepare("SELECT * FROM cart WHERE user_id=:user_id");
@@ -21,6 +25,4 @@ if (isset($_SESSION['user_id'])) {
     header('Content-Type: application/zip');
     header('Content-disposition: attachment; filename=' . $zipname);
     readfile($zipname);
-
-
 }
