@@ -101,7 +101,9 @@ if ($productId) {
                                         <input type="number" name="pro_amount" id="pro_amount" class="form-control" value="1" min="1">
                                     </div>
                                 <?php } ?>
-                                <input type="hidden" name="user_id" value="<?php echo  htmlspecialchars($_SESSION['user_id']) ?>">
+                                <?php if (isset($_SESSION['user_id'])) :?>
+                                    <input type="hidden" name="user_id" value="<?php echo  htmlspecialchars($_SESSION['user_id']) ?>">
+                                <?php endif; ?>
                                 <?php if (isset($_SESSION["user_id"])) { ?>
                                     <div class="cart mt-4 align-items-center">
                                         <?php if ($select->rowCount() > 0): ?>
