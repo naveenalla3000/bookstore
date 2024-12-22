@@ -5,7 +5,8 @@ require "../../config/config.php";
 <?php
 
 if (!isset($_SESSION['adminname'])) {
-  header("location: " . ADMINURL . "");
+  header("location: " . ADMINURL . "/admins/login-admins.php");
+  exit();
 }
 
 if (htmlspecialchars($_SERVER['REQUEST_METHOD']) == 'POST') {

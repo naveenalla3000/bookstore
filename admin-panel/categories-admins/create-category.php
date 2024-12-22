@@ -3,7 +3,7 @@ require "../includes/header.php";
 require "../../config/config.php";
 
 if (!isset($_SESSION['adminname'])) {
-  header("location: " . ADMINURL . "/admins/admins-login.php");
+  header("location: " . ADMINURL . "/admins/login-admins.php");
   exit();
 }
 

@@ -4,7 +4,7 @@ require "../../config/config.php";
 ?>
 <?php
 if (!isset($_SESSION['adminname'])) {
-  header("location: " . ADMINURL . "/admins/admins-login.php");
+  header("location: " . ADMINURL . "/admins/login-admins.php");
 }
 if (isset($_GET['id'])) {
   $id = $_GET['id'];
