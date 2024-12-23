@@ -34,11 +34,21 @@ if (isset($_POST["submit"])) {
 $productId = urldecode($_GET['id']);
 if ($productId) {
     try {
+        // fetch product from cart
         $select = $conn->prepare("SELECT * FROM cart WHERE pro_id = :pro_id AND user_id = :user_id");
         $select->execute([
             ":pro_id" => $productId,
             ":user_id" => $user_id,
         ]);
+
+        // fetching product from wishlist
+        $selectWishlist = $conn->prepare("SELECT * FROM wishlist WHERE pro_id = :pro_id AND user_id = :user_id");
+        $selectWishlist->execute([
+            ":pro_id" => $productId,
+            ":user_id" => $user_id,
+        ]);
+        $fetch = $selectWishlist->fetch(PDO::FETCH_OBJ);
+
         $stmt = $conn->prepare("SELECT * FROM products WHERE id = :id AND status = 1");
         $stmt->bindParam(":id", $productId, PDO::PARAM_INT);
         $stmt->execute();
@@ -101,7 +111,7 @@ if ($productId) {
                                         <input type="number" name="pro_amount" id="pro_amount" class="form-control" value="1" min="1">
                                     </div>
                                 <?php } ?>
-                                <?php if (isset($_SESSION['user_id'])) :?>
+                                <?php if (isset($_SESSION['user_id'])) : ?>
                                     <input type="hidden" name="user_id" value="<?php echo  htmlspecialchars($_SESSION['user_id']) ?>">
                                 <?php endif; ?>
                                 <?php if (isset($_SESSION["user_id"])) { ?>
@@ -113,6 +123,15 @@ if ($productId) {
                                         <?php else: ?>
                                             <button type="submit" id="submit" name="submit" class="btn btn-primary text-uppercase mr-2 px-4">
                                                 <i class="fas fa-shopping-cart"></i> Add to cart
+                                            </button>
+                                        <?php endif; ?>
+                                        <?php if ($selectWishlist->rowCount() > 0): ?>
+                                            <button type="button" class="btn btn-danger btn-delete-wishlist" value="<?php echo $fetch->id; ?>">
+                                                <i class="fa fa-heart-o"></i> Added to wishlist
+                                            </button>
+                                        <?php else: ?>
+                                            <button type="button" class="btn btn-danger wishlist-btn">
+                                                <i class="fa fa-heart-o"></i> Add to wishlist
                                             </button>
                                         <?php endif; ?>
                                     </div>
@@ -131,6 +150,7 @@ if ($productId) {
 
 <script>
     $(document).ready(function() {
+        // add to cart
         $(document).on("submit", function(e) {
             e.preventDefault();
             var formdata = $("#form-data").serialize() + '&submit=submit';
@@ -147,9 +167,67 @@ if ($productId) {
                     alert("An error occurred: " + xhr.responseText);
                 }
             });
+
             function reload() {
                 $("body").load("single.php?id=<?php echo $productId; ?>");
             }
-        });
+        });;
+
+        // add to wishlist
+        $(".wishlist-btn").on("click", function(e) {
+            e.preventDefault();
+            var formdata = $("#form-data").serialize() + '&submit=submit';
+            $.ajax({
+                url: "wishlist.php",
+                type: "POST",
+                data: formdata,
+                success: function(data) {
+                    alert("Product added to wishlist");
+                    $(".wishlist-btn")
+                        .html("<i class='fa fa-heart-o'></i> Added to wishlist")
+                        .addClass("btn-delete-wishlist")
+                        .removeClass("wishlist-btn");
+                    reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("An error occurred: " + xhr.responseText);
+                }
+            });
+
+            function reload() {
+                $("body").load("single.php?id=<?php echo $productId; ?>");
+            }
+        });;
+
+        $(".btn-delete-wishlist").on('click', function(e) {
+            e.preventDefault();
+
+            var id = $(this).val();
+
+
+            $.ajax({
+                type: "POST",
+                url: "delete-item-wishlist.php",
+                data: {
+                    delete: "delete",
+                    id: id,
+                },
+
+                success: function() {
+                    alert("product deleted from wishlist");
+                    $(".btn-delete-wishlist")
+                        .html("<i class='fa fa-heart-o'></i> Add to wishlist")
+                        .addClass("wishlist-btn")
+                        .removeClass("btn-delete-wishlist");
+                    reload();
+                }
+            });
+
+            function reload() {
+                $("body").load("single.php?id=<?php echo $productId; ?>");
+            }
+        });;
+
+
     });
 </script>
