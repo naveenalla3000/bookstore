@@ -1,5 +1,6 @@
 {
     "require": {
-        "stripe/stripe-php": "^16.4"
+        "stripe/stripe-php": "^16.4",
+        "sendgrid/sendgrid": "^8.1"
     }
 }

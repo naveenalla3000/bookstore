@@ -53,7 +53,7 @@ try {
             ],
         ],
         'mode' => 'payment',
-        'success_url' => "http://localhost/bookstore/shopping/success.php",
+        'success_url' => "http://localhost/bookstore/download.php",
         'cancel_url' => "http://localhost/bookstore/shopping/cancel.php",
     ]);
 
@@ -71,10 +71,6 @@ try {
     ]);
 
     // Redirect to Stripe's hosted checkout page
-    $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = :user_id");
-    $stmt->execute([
-        ":user_id" => $user_id,
-    ]);
     header("Location: " . $session->url);
     exit();
 } catch (\Stripe\Exception\ApiErrorException $e) {
